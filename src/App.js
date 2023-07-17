@@ -1,25 +1,44 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-
-function App() {
+import {
+  Route,
+  Routes,
+  NavLink
+} from 'react-router-dom';
+import routes from './routes';
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <div className="App">
+        <ul className="menu">
+          <li>
+            <NavLink to="/" className={
+              ({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "" 
+            }>Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/product" className={
+              ({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""
+            }>Product</NavLink>
+          </li>
+        </ul>
+        <div className="main">
+          <Routes>
+          
 
-export default App;
+          {routes.map((route, i) => {
+            const {
+            path,
+            Component
+            } = route
+            return <Route path={path} key={i} element={ <Component/> } >
+            </Route>
+            })}
+                
+          </Routes>
+        </div>
+      </div>
+    </React.Suspense>
+  )
+}
+export default App
